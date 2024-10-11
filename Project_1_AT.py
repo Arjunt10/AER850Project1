@@ -25,17 +25,26 @@ df = pd.read_csv("Project_1_Data.csv")
 "Need to visualize the data in plots"
 
 "Histogram"
-# Histogram = plt.hist(df['X'], bins= 45)
 
+Histogram_X = plt.hist(df['X'], bins = 45)
+Histogram_Y = plt.hist(df['Y'], bins = 45)
+Histogram_Z = plt.hist(df['Z'], bins = 45)
+
+plt.title('Histogram of X, Y, Z vs Frequency')
+plt.xlabel('X, Y, Z')
+plt.ylabel('Frequency')
+
+"Creating seperate figures "
+plt.figure()
 
 
 "Scatter Plot"
 
 scatterplot_X = plt.scatter(df['Step'], df['X'])
 
-scatterplot_X = plt.scatter(df['Step'], df['Y'])
+scatterplot_Y = plt.scatter(df['Step'], df['Y'])
 
-scatterplot_X = plt.scatter(df['Step'], df['Z'])
+scatterplot_Z = plt.scatter(df['Step'], df['Z'])
 
 plt.title('Scatterplot of X, Y, Z vs Steps')
 plt.xlabel('Steps')
