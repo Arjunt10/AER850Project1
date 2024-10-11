@@ -15,6 +15,7 @@ AER850 - PROJECT 1
 import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
+import seaborn as sns
 
 "Read Data from CSV File & convert into dataframe"
 
@@ -22,38 +23,22 @@ df = pd.read_csv("Project_1_Data.csv")
 
 "STEP 2: Data Visualization "
 
-"Need to visualize the data in plots"
+# "Need to visualize the data in plots"
 
-"Histogram"
+"3D Scatter Plot"
 
-Histogram_X = plt.hist(df['X'], bins = 45)
-Histogram_Y = plt.hist(df['Y'], bins = 45)
-Histogram_Z = plt.hist(df['Z'], bins = 45)
+fig = plt.figure (figsize=(10,8))
+ax = fig.add_subplot(111,projection = '3d')
 
-plt.title('Histogram of X, Y, Z vs Frequency')
-plt.xlabel('X, Y, Z')
-plt.ylabel('Frequency')
+scatterplot_XYZ = ax.scatter(df['X'],df['Y'],df['Z'], c=df['Step'],cmap = 'viridis')
 
-"Creating seperate figures "
-plt.figure()
+plt.title('Scatterplot of X, Y, Z')
+ax.set_xlabel('X')
+ax.set_ylabel('Y')
+ax.set_zlabel('Z')
 
+plt.colorbar(scatterplot_XYZ,ax=ax, label = 'step')
 
-"Scatter Plot"
-
-scatterplot_X = plt.scatter(df['Step'], df['X'])
-
-scatterplot_Y = plt.scatter(df['Step'], df['Y'])
-
-scatterplot_Z = plt.scatter(df['Step'], df['Z'])
-
-plt.title('Scatterplot of X, Y, Z vs Steps')
-plt.xlabel('Steps')
-plt.ylabel('X, Y, Z')
-
-
-
-
-""
 
 "Simple Statistics from the data"
 
@@ -62,12 +47,15 @@ stats = df.describe()
 print ("The statistically measures of the columns in the dataset are:", stats)
 
 
-
-
-
 "STEP 3: Correlation Analysis"
 
 correlation_matrix = df.corr()
 
 print ("Here is the correlation matrix of the dataset", correlation_matrix)
+
+# Need to create a new figure
+
+plt.figure()
+
+correlation_heatmap = sns.heatmap(correlation_matrix)
 
