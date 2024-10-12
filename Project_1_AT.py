@@ -27,7 +27,7 @@ df = pd.read_csv("Project_1_Data.csv")
 
 "3D Scatter Plot"
 
-fig = plt.figure (figsize=(10,8))
+fig = plt.figure (figsize=(10,10))
 ax = fig.add_subplot(111,projection = '3d')
 
 scatterplot_XYZ = ax.scatter(df['X'],df['Y'],df['Z'], c=df['Step'],cmap = 'viridis')
@@ -55,7 +55,8 @@ print ("Here is the correlation matrix of the dataset", correlation_matrix)
 
 # Need to create a new figure
 
-plt.figure()
+plt.figure(figsize=(10,10))
 
 correlation_heatmap = sns.heatmap(correlation_matrix)
+
 
