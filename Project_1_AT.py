@@ -20,38 +20,49 @@ import seaborn as sns
 "Read Data from CSV File & convert into dataframe"
 
 df = pd.read_csv("Project_1_Data.csv")
+initial_data = df.head()
 
-"STEP 2: Data Visualization "
+print ("Here are the first few rows of the data for verification:", initial_data)
 
-# "Need to visualize the data in plots"
+"STEP 2: Data Visualization Of RAW DATA "
 
-"3D Scatter Plot"
+# "Need to visualize the raw data in plots"
+
+"3D Scatter Plot of RAW DATA"
 
 fig = plt.figure (figsize=(10,10))
 ax = fig.add_subplot(111,projection = '3d')
 
-scatterplot_XYZ = ax.scatter(df['X'],df['Y'],df['Z'], c=df['Step'],cmap = 'viridis')
+scatterplot_raw_XYZ = ax.scatter(df['X'],df['Y'],df['Z'], c=df['Step'],cmap = 'viridis')
 
-plt.title('Scatterplot of X, Y, Z')
+plt.title('Scatterplot of X, Y, Z (RAW DATA)')
 ax.set_xlabel('X')
 ax.set_ylabel('Y')
 ax.set_zlabel('Z')
 
-plt.colorbar(scatterplot_XYZ,ax=ax, label = 'step')
+# For the legend
+plt.colorbar(scatterplot_raw_XYZ,ax=ax, label = 'step')
+
+"Box Plot of RAW DATA"
+# To see if any outliers exist for each axis
+
+fig_2 = plt.figure(figsize=(10,6))
+plt.boxplot([df['X'], df['Y'], df['Z']], labels = ['X', 'Y', 'Z'])
+plt.title('Box Plot of X, Y, Z (RAW DATA)')
 
 
-"Simple Statistics from the data"
+"Simple Statistics from the Raw data"
 
 stats = df.describe()
 
-print ("The statistically measures of the columns in the dataset are:", stats)
+print ("The statistically measures of the columns in the raw dataset are:", stats)
 
 
-"STEP 3: Correlation Analysis"
+"STEP 3: Correlation Analysis of RAW Data"
 
 correlation_matrix = df.corr()
 
-print ("Here is the correlation matrix of the dataset", correlation_matrix)
+print ("Here is the correlation matrix of the raw dataset", correlation_matrix)
 
 # Need to create a new figure
 
@@ -59,4 +70,18 @@ plt.figure(figsize=(10,10))
 
 correlation_heatmap = sns.heatmap(correlation_matrix)
 
+"Step 4: Classification Model Development/Engineering"
+
+#Import Library for data spliting
+
+from sklearn.model_selection import StratifiedShuffleSplit
+
+# Need to split data into train and test data using stratified sampling
+
+
+#Data should be 80-20 split. 80% train & 20% Test
+
+my_split = StratifiedShuffleSplit(n_splits = 1, test_size= 0.2, random_state = 42)
+
+for train_index, test_index in my_split.split(df.df['Step']):
 
