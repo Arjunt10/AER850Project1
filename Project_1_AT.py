@@ -159,6 +159,7 @@ best_randomforest_model2 = m2_randomforest_grid.best_estimator_
 print ('Best Random Forest Model:', best_randomforest_model2)
 
 "MODEL 3: Decision Tree Model (Using GridSearchCV)"
+
 #Import library for Model 3
 from sklearn.tree import DecisionTreeClassifier
 
@@ -184,3 +185,32 @@ m3_decisiontree_grid.fit(features_train_scaled, target_train)
 best_decisiontree_model3 = m3_decisiontree_grid.best_estimator_
 print ('Best Decision Tree Model:', best_decisiontree_model3)
 
+"MODEL 4: Support Vector Machine (SVM) Model (Using RandomizedSearchCV)"
+
+#Import library for Model 4
+from sklearn.svm import SVC
+from sklearn.model_selection import RandomizedSearchCV
+
+m4_svm = SVC(random_state = 42)
+
+#Defining Parameters
+m4_svm_param_grid = {
+    'C': [0.1, 1, 10, 100],
+    'kernel': ['linear', 'rbf', 'poly', 'sigmoid'],
+    'gamma' : ['scale', 'auto']
+    }
+
+m4_svm_random = RandomizedSearchCV (m4_svm,
+                                m4_svm_param_grid,
+                                scoring = 'accuracy',
+                                n_jobs = -1,
+                                n_iter = 20,
+                                cv = 5, 
+                                random_state = 42
+                                )
+#Fitting model with scaled features and target from train set
+m4_svm_random.fit (features_train_scaled, target_train)
+
+#Gives out best parameters for SVM model
+best_svm_model4 = m4_svm_random.best_estimator_
+print ('Best SVM model:', best_svm_model4)
