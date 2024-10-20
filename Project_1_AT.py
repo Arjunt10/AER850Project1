@@ -146,16 +146,41 @@ m2_randomforest_param_grid = {
     'max_features': ['sqrt', 'log2']
     }
 
-m2_randomforest_grid = GridSearchCV((m2_randomforest),
-                                    m2_randomforest_param_grid,
-                                    scoring = 'accuracy',
-                                    n_jobs = -1,
-                                    cv = 5)
+m2_randomforest_grid = GridSearchCV (m2_randomforest,
+                                     m2_randomforest_param_grid,
+                                     scoring = 'accuracy',
+                                     n_jobs = -1,
+                                     cv = 5)
 #Fitting model with scaled features and trainset target
 m2_randomforest_grid.fit(features_train_scaled, target_train)
 
 #Gives out best parameters for random forest model
-
 best_randomforest_model2 = m2_randomforest_grid.best_estimator_
 print ('Best Random Forest Model:', best_randomforest_model2)
+
+"MODEL 3: Decision Tree Model (Using GridSearchCV)"
+#Import library for Model 3
+from sklearn.tree import DecisionTreeClassifier
+
+m3_decisiontree = DecisionTreeClassifier(random_state = 42)
+
+#Defining Parameters
+m3_decisiontree_param_grid = {
+    'max_depth': [None, 10, 20, 30],
+    'min_samples_split': [2, 5, 10],
+    'min_samples_leaf': [1, 2, 4],
+    'criterion': ['gini', 'entropy'] 
+    }
+
+m3_decisiontree_grid = GridSearchCV (m3_decisiontree,
+                                     m3_decisiontree_param_grid,
+                                     scoring = 'accuracy',
+                                     n_jobs = -1,
+                                     cv = 5)
+#Fitting model with scaled features and target from trainset
+m3_decisiontree_grid.fit(features_train_scaled, target_train)
+
+#Gives out best parameters for decision tree model
+best_decisiontree_model3 = m3_decisiontree_grid.best_estimator_
+print ('Best Decision Tree Model:', best_decisiontree_model3)
 
