@@ -102,6 +102,23 @@ my_scaler = StandardScaler()
 my_scaler.fit(features_train) #calculating mean and standard deviation - ONLY TRAIN DATA to prevent data leak.
 
 features_train_scaled = my_scaler.transform(features_train)
-
 features_test_scaled = my_scaler.transform (features_test)
+
+"MODEL 1: Logistic Regression (Using GridSearchCV)"
+
+from sklearn.linear_model import LogisticRegression
+from sklearn.model_selection import GridSearchCV
+
+model_1_logreg = LogisticRegression(random_state = 42)
+
+m1_logreg_param_grid = {
+    'C': [0.01, 0.1, 1, 10]
+   
+    
+    
+    
+    }
+
+
+
 
