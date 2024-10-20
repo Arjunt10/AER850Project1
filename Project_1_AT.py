@@ -224,15 +224,38 @@ from sklearn.metrics import accuracy_score, f1_score, precision_score
 #It would be easier to create a function that consists of performance metrics and just run that for each model
 def performance_metric (model, features_test_scaled, target_test):
     target_prediction = model.predict (features_test_scaled)
-    print ('Accuracy:', accuracy_score(target_test, target_prediction))
-    print ('Precision:', Precision = precision_score(target_test, target_prediction))
-    print ('F1 Score:', F1_Score = f1_score (target_test, target_prediction))
-    
+    Accuracy = accuracy_score(target_test, target_prediction)
+    Precision = precision_score(target_test, target_prediction, average = 'weighted')
+    F1_Score = f1_score (target_test, target_prediction, average = 'weighted')
+       
+    return {
+        'Accuracy': Accuracy,
+        'Precision': Precision,
+        'F1 Score': F1_Score
+        }
+
 #Performance of Model 1: Logistic Regression
 
 m1_logreg_performance = performance_metric (best_logreg_model1,features_test_scaled, target_test)
 
 print ('Here is the performance analysis of Model 1 - Logisitic Regression:', m1_logreg_performance)
 
+#Performance of Model 2: Random Forest
+
+m2_randomforest_performance = performance_metric (best_randomforest_model2,features_test_scaled, target_test)
+
+print ('Here is the performance analysis of Model 2 - Random Forest:', m2_randomforest_performance)
 
        
+#Performance of Model 3: Decision Tree
+
+m3_decisiontree_performance = performance_metric (best_decisiontree_model3 ,features_test_scaled, target_test)
+
+print ('Here is the performance analysis of Model 3 - Decision Tree:', m3_decisiontree_performance)
+
+#Performance of Model 4:SVM
+
+m4_svm_performance = performance_metric (best_svm_model4, features_test_scaled, target_test)
+
+print ('Here is the performance analysis of Model 4 - Support Vector Machine (SVM):', m4_svm_performance)
+
