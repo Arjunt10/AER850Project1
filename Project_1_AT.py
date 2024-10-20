@@ -133,9 +133,9 @@ print ('Best Logistic Regression Model:', best_logreg_model1)
 "MODEL 2: Random Forest Model (Using GridSearchCV)"
 
 #Import library for Model 2
-from sklearn.ensemble import RandomForestRegressor
+from sklearn.ensemble import RandomForestClassifier
 
-m2_randomforest = RandomForestRegressor(random_state = 42)
+m2_randomforest = RandomForestClassifier(random_state = 42)
 
 # Defining Parameters
 m2_randomforest_param_grid = {
