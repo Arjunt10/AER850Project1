@@ -113,7 +113,7 @@ model_1_logreg = LogisticRegression(random_state = 42)
 
 #Defining Parameters for model
 m1_logreg_param_grid = {
-    'C': [0.01, 0.1, 1, 10],
+    'C': [0.01, 0.1, 1, 5],
     'max_iter':[500,1000,1500],
     'solver': ['saga', 'newton-cg', 'lbfgs'],
     }
@@ -128,7 +128,7 @@ m1_logreg_grid.fit(features_train_scaled, target_train)
 
 #Gives out the best parameters for the logreg model
 best_logreg_model1 = m1_logreg_grid.best_estimator_
-print ('Best Logistic Regression Model:', best_logreg_model1)
+print ('\n Best Logistic Regression Model:', best_logreg_model1)
 
 "MODEL 2: Random Forest Model (Using GridSearchCV)"
 
@@ -156,7 +156,7 @@ m2_randomforest_grid.fit(features_train_scaled, target_train)
 
 #Gives out best parameters for random forest model
 best_randomforest_model2 = m2_randomforest_grid.best_estimator_
-print ('Best Random Forest Model:', best_randomforest_model2)
+print ('\n Best Random Forest Model:', best_randomforest_model2)
 
 "MODEL 3: Decision Tree Model (Using GridSearchCV)"
 
@@ -183,7 +183,7 @@ m3_decisiontree_grid.fit(features_train_scaled, target_train)
 
 #Gives out best parameters for decision tree model
 best_decisiontree_model3 = m3_decisiontree_grid.best_estimator_
-print ('Best Decision Tree Model:', best_decisiontree_model3)
+print ('\n Best Decision Tree Model:', best_decisiontree_model3)
 
 "MODEL 4: Support Vector Machine (SVM) Model (Using RandomizedSearchCV)"
 
@@ -195,7 +195,7 @@ m4_svm = SVC(random_state = 42)
 
 #Defining Parameters
 m4_svm_param_grid = {
-    'C': [0.1, 1, 10, 100],
+    'C': [0.001, 0.01, 0.1],
     'kernel': ['linear', 'rbf', 'poly', 'sigmoid'],
     'gamma' : ['scale', 'auto']
     }
@@ -213,7 +213,7 @@ m4_svm_random.fit (features_train_scaled, target_train)
 
 #Gives out best parameters for SVM model
 best_svm_model4 = m4_svm_random.best_estimator_
-print ('Best SVM model:', best_svm_model4)
+print ('\n Best SVM model:', best_svm_model4)
 
 
 "Step 5: Model Performance Analysis"
@@ -238,24 +238,24 @@ def performance_metric (model, features_test_scaled, target_test):
 
 m1_logreg_performance = performance_metric (best_logreg_model1,features_test_scaled, target_test)
 
-print ('Here is the performance analysis of Model 1 - Logisitic Regression:', m1_logreg_performance)
+print ('\n Here is the performance analysis of Model 1 - Logisitic Regression:', m1_logreg_performance)
 
 #Performance of Model 2: Random Forest
 
 m2_randomforest_performance = performance_metric (best_randomforest_model2,features_test_scaled, target_test)
 
-print ('Here is the performance analysis of Model 2 - Random Forest:', m2_randomforest_performance)
+print ('\n Here is the performance analysis of Model 2 - Random Forest:', m2_randomforest_performance)
 
        
 #Performance of Model 3: Decision Tree
 
 m3_decisiontree_performance = performance_metric (best_decisiontree_model3 ,features_test_scaled, target_test)
 
-print ('Here is the performance analysis of Model 3 - Decision Tree:', m3_decisiontree_performance)
+print ('\n Here is the performance analysis of Model 3 - Decision Tree:', m3_decisiontree_performance)
 
 #Performance of Model 4:SVM
 
 m4_svm_performance = performance_metric (best_svm_model4, features_test_scaled, target_test)
 
-print ('Here is the performance analysis of Model 4 - Support Vector Machine (SVM):', m4_svm_performance)
+print ('\n Here is the performance analysis of Model 4 - Support Vector Machine (SVM):', m4_svm_performance)
 
