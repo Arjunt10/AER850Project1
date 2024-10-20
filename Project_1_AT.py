@@ -111,6 +111,7 @@ from sklearn.model_selection import GridSearchCV
 
 model_1_logreg = LogisticRegression(random_state = 42)
 
+#Defining Parameters for model
 m1_logreg_param_grid = {
     'C': [0.01, 0.1, 1, 10],
     'max_iter':[500,1000,1500],
@@ -121,11 +122,13 @@ m1_logreg_grid = GridSearchCV(model_1_logreg,
                               scoring = 'accuracy',
                               n_jobs = -1,
                               cv = 5)
+
+#Fitting model with scaled features and trainset target
 m1_logreg_grid.fit(features_train_scaled, target_train)
-best_logreg_model1_params = m1_logreg_grid.best_params_
-print ('Best Hyperparameters for Logistic Regression Model:', best_logreg_model1_params)
 
+#Gives out the best parameters for the logreg model
 best_logreg_model1 = m1_logreg_grid.best_estimator_
-
 print ('Best Logistic Regression Model:', best_logreg_model1)
+
+"MODEL 2: Random Forest Model (Using GridSearchCV)"
 
