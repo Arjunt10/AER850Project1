@@ -77,11 +77,31 @@ correlation_heatmap = sns.heatmap(correlation_matrix)
 from sklearn.model_selection import StratifiedShuffleSplit
 
 # Need to split data into train and test data using stratified sampling
-
-
-#Data should be 80-20 split. 80% train & 20% Test
+# Data should be 80-20 split. 80% train & 20% Test
 
 my_split = StratifiedShuffleSplit(n_splits = 1, test_size= 0.2, random_state = 42)
 
-for train_index, test_index in my_split.split(df.df['Step']):
+for train_index, test_index in my_split.split(df,df['Step']):
+    strat_train_set = df.loc[train_index].reset_index(drop = True)
+    strat_test_set = df.loc[test_index].reset_index(drop = True)
+
+# Need to further split train/test data into features & targets
+
+features_train = strat_train_set.drop(columns = ['Step'])
+target_train = strat_train_set['Step']
+
+features_test = strat_test_set.drop(columns = ['Step'])
+target_test = strat_test_set['Step']
+
+# Scaling the train/test data of the features (x,y,z)
+
+from sklearn.preprocessing import StandardScaler
+
+my_scaler = StandardScaler()
+
+my_scaler.fit(features_train) #calculating mean and standard deviation - ONLY TRAIN DATA to prevent data leak.
+
+features_train_scaled = my_scaler.transform(features_train)
+
+features_test_scaled = my_scaler.transform (features_test)
 
