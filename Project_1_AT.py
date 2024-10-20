@@ -214,3 +214,25 @@ m4_svm_random.fit (features_train_scaled, target_train)
 #Gives out best parameters for SVM model
 best_svm_model4 = m4_svm_random.best_estimator_
 print ('Best SVM model:', best_svm_model4)
+
+
+"Step 5: Model Performance Analysis"
+
+#Import library for performance metrics
+from sklearn.metrics import accuracy_score, f1_score, precision_score
+
+#It would be easier to create a function that consists of performance metrics and just run that for each model
+def performance_metric (model, features_test_scaled, target_test):
+    target_prediction = model.predict (features_test_scaled)
+    print ('Accuracy:', accuracy_score(target_test, target_prediction))
+    print ('Precision:', Precision = precision_score(target_test, target_prediction))
+    print ('F1 Score:', F1_Score = f1_score (target_test, target_prediction))
+    
+#Performance of Model 1: Logistic Regression
+
+m1_logreg_performance = performance_metric (best_logreg_model1,features_test_scaled, target_test)
+
+print ('Here is the performance analysis of Model 1 - Logisitic Regression:', m1_logreg_performance)
+
+
+       
