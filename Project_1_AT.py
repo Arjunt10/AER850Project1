@@ -113,13 +113,13 @@ model_1_logreg = LogisticRegression(random_state = 42)
 
 #Defining Parameters for model
 m1_logreg_param_grid = {
-    'C': [0.01, 0.1, 1, 5],
-    'max_iter':[500,1000,1500],
+    'C': [0.01, 0.1, 1],
+    'max_iter':[2000, 3000, 5000],
     'solver': ['saga', 'newton-cg', 'lbfgs'],
     }
 m1_logreg_grid = GridSearchCV(model_1_logreg,
                               m1_logreg_param_grid,
-                              scoring = 'accuracy',
+                              scoring = 'f1_weighted',
                               n_jobs = -1,
                               cv = 5)
 
@@ -139,8 +139,8 @@ m2_randomforest = RandomForestClassifier(random_state = 42)
 
 # Defining Parameters
 m2_randomforest_param_grid = {
-    'n_estimators': [10, 30, 50],
-    'max_depth': [None, 10, 20, 30],
+    'n_estimators': [10, 30, 50,100, 200],
+    'max_depth': [None, 5, 10, 20, 30],
     'min_samples_split': [2, 5, 10],
     'min_samples_leaf': [1, 2, 4],
     'max_features': ['sqrt', 'log2']
@@ -167,9 +167,9 @@ m3_decisiontree = DecisionTreeClassifier(random_state = 42)
 
 #Defining Parameters
 m3_decisiontree_param_grid = {
-    'max_depth': [None, 10, 20, 30],
-    'min_samples_split': [2, 5, 10],
-    'min_samples_leaf': [1, 2, 4],
+    'max_depth': [None, 10, 20, 30, 50],
+    'min_samples_split': [2, 5, 10, 15],
+    'min_samples_leaf': [1, 2, 4, 6],
     'criterion': ['gini', 'entropy'] 
     }
 
@@ -196,7 +196,7 @@ m4_svm = SVC(random_state = 42)
 #Defining Parameters
 m4_svm_param_grid = {
     'C': [0.001, 0.01, 0.1],
-    'kernel': ['linear', 'rbf', 'poly', 'sigmoid'],
+    'kernel': ['linear', 'rbf'],
     'gamma' : ['scale', 'auto']
     }
 
@@ -204,7 +204,7 @@ m4_svm_random = RandomizedSearchCV (m4_svm,
                                 m4_svm_param_grid,
                                 scoring = 'accuracy',
                                 n_jobs = -1,
-                                n_iter = 20,
+                                n_iter = 12,
                                 cv = 5, 
                                 random_state = 42
                                 )
@@ -225,8 +225,8 @@ from sklearn.metrics import accuracy_score, f1_score, precision_score
 def performance_metric (model, features_test_scaled, target_test):
     target_prediction = model.predict (features_test_scaled)
     Accuracy = accuracy_score(target_test, target_prediction)
-    Precision = precision_score(target_test, target_prediction, average = 'weighted')
-    F1_Score = f1_score (target_test, target_prediction, average = 'weighted')
+    Precision = precision_score(target_test, target_prediction, average = 'weighted', zero_division = 1)
+    F1_Score = f1_score (target_test, target_prediction, average = 'weighted', zero_division = 1)
        
     return {
         'Accuracy': Accuracy,
@@ -238,7 +238,7 @@ def performance_metric (model, features_test_scaled, target_test):
 
 m1_logreg_performance = performance_metric (best_logreg_model1,features_test_scaled, target_test)
 
-print ('\n Here is the performance analysis of Model 1 - Logisitic Regression:', m1_logreg_performance)
+print ('\n Here is the performance analysis of Model 1 - Logistic Regression:', m1_logreg_performance)
 
 #Performance of Model 2: Random Forest
 
@@ -246,7 +246,6 @@ m2_randomforest_performance = performance_metric (best_randomforest_model2,featu
 
 print ('\n Here is the performance analysis of Model 2 - Random Forest:', m2_randomforest_performance)
 
-       
 #Performance of Model 3: Decision Tree
 
 m3_decisiontree_performance = performance_metric (best_decisiontree_model3 ,features_test_scaled, target_test)
@@ -258,4 +257,29 @@ print ('\n Here is the performance analysis of Model 3 - Decision Tree:', m3_dec
 m4_svm_performance = performance_metric (best_svm_model4, features_test_scaled, target_test)
 
 print ('\n Here is the performance analysis of Model 4 - Support Vector Machine (SVM):', m4_svm_performance)
+
+#Model 3: Decision Tree is the best model for this dataset as it has the best metrics amongst the other models
+#especially the F1_score
+best_model_pred = best_decisiontree_model3.predict(features_test_scaled)
+
+#The performance of Model 3 must be visualized through a confusion matrix
+
+#import Library
+from sklearn.metrics import confusion_matrix, ConfusionMatrixDisplay
+
+conf_matrix = confusion_matrix(target_test, best_model_pred)
+
+print('\n Here is the confusion matrix for Model 3 - Decision Tree: \n', conf_matrix)
+
+fig_4 = plt.figure(figsize=(10,10))
+
+ConfusionMatrixDisplay(conf_matrix)
+
+plt.title('Confusion Matrix For Decision Tree Model')
+
+
+
+
+
+
 
