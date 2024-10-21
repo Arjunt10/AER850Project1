@@ -260,6 +260,8 @@ print ('\n Here is the performance analysis of Model 4 - Support Vector Machine 
 
 #Model 3: Decision Tree is the best model for this dataset as it has the best metrics amongst the other models
 #especially the F1_score
+
+#Run test data through best model - Decision Tree
 best_model_pred = best_decisiontree_model3.predict(features_test_scaled)
 
 #The performance of Model 3 must be visualized through a confusion matrix
@@ -267,19 +269,55 @@ best_model_pred = best_decisiontree_model3.predict(features_test_scaled)
 #import Library
 from sklearn.metrics import confusion_matrix, ConfusionMatrixDisplay
 
+#Matrix Setup
 conf_matrix = confusion_matrix(target_test, best_model_pred)
-
 print('\n Here is the confusion matrix for Model 3 - Decision Tree: \n', conf_matrix)
 
-fig_4 = plt.figure(figsize=(10,10))
+#Display the confusion matrix as a plot
+Conf_mat_disp = ConfusionMatrixDisplay(confusion_matrix = conf_matrix)
+Conf_mat_disp.plot(cmap="viridis")
+plt.title("Confusion Matrix for Decision Tree Model")
 
-ConfusionMatrixDisplay(conf_matrix)
+"STEP 6: Stacked Model Performance Analysis"
 
-plt.title('Confusion Matrix For Decision Tree Model')
+#library import
+from sklearn.ensemble import StackingClassifier
 
+#I will be combining Decision Tree Model & the Logisitic Regression models
 
+#This is a stacking classifer parameter according to official scikit-learn website
 
+estimators = [('logreg', best_logreg_model1), ('dt', best_decisiontree_model3)]
+final_estimator = LogisticRegression()
 
+#stacking the models
+stacked_model = StackingClassifier(estimators = estimators, final_estimator = final_estimator, cv = 5,)
+stacked_model.fit(features_train_scaled, target_train)
+
+#Evaluting the model
+stacked_model_pred = stacked_model.predict(features_test_scaled)
+
+#Performance Metrics
+
+stacked_accu = accuracy_score(target_test, stacked_model_pred)
+stacked_prec = precision_score(target_test, stacked_model_pred, average = 'weighted', zero_division = 1)
+stacked_f1 = f1_score(target_test, stacked_model_pred, average = 'weighted', zero_division = 1)
+
+print ('\n The Performance Metrics of The Stacked model (Logistic Regression & Decision Tree) can be found below:\n')
+print ('The accuracy of the stacked model is:', stacked_accu)
+print ('The precision of the stacked model is:', stacked_prec)
+print ('The F1-Score of the stacked model is:', stacked_f1)
+
+#Confusion Matrix of this Stacked Model
+
+#Matrix Setup
+stacked_conf_matrix = confusion_matrix(target_test, stacked_model_pred)
+print('\n Here is the confusion matrix for the stacked model: \n', stacked_conf_matrix)
+
+#Display the confusion matrix as a plot
+stacked_conf_mat_disp = ConfusionMatrixDisplay(confusion_matrix = stacked_conf_matrix)
+stacked_conf_mat_disp.plot(cmap="viridis")
+plt.title("Confusion Matrix for The Stacked Model")
 
 
 
