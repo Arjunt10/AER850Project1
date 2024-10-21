@@ -24,51 +24,51 @@ initial_data = df.head()
 
 print ("Here are the first few rows of the data for verification:", initial_data)
 
-# "STEP 2: Data Visualization Of RAW DATA "
+"STEP 2: Data Visualization Of RAW DATA "
 
-# # "Need to visualize the raw data in plots"
+# "Need to visualize the raw data in plots"
 
-# "3D Scatter Plot of RAW DATA"
+"3D Scatter Plot of RAW DATA"
 
-# fig = plt.figure (figsize=(10,10))
-# ax = fig.add_subplot(111,projection = '3d')
+fig = plt.figure (figsize=(10,10))
+ax = fig.add_subplot(111,projection = '3d')
 
-# scatterplot_raw_XYZ = ax.scatter(df['X'],df['Y'],df['Z'], c=df['Step'],cmap = 'viridis')
+scatterplot_raw_XYZ = ax.scatter(df['X'],df['Y'],df['Z'], c=df['Step'],cmap = 'viridis')
 
-# plt.title('Scatterplot of X, Y, Z (RAW DATA)')
-# ax.set_xlabel('X')
-# ax.set_ylabel('Y')
-# ax.set_zlabel('Z')
+plt.title('Scatterplot of X, Y, Z (RAW DATA)')
+ax.set_xlabel('X')
+ax.set_ylabel('Y')
+ax.set_zlabel('Z')
 
-# # For the legend
-# plt.colorbar(scatterplot_raw_XYZ,ax=ax, label = 'step')
+# For the legend
+plt.colorbar(scatterplot_raw_XYZ,ax=ax, label = 'step')
 
-# "Box Plot of RAW DATA"
-# # To see if any outliers exist for each axis
+"Box Plot of RAW DATA"
+# To see if any outliers exist for each axis
 
-# fig_2 = plt.figure(figsize=(10,6))
-# plt.boxplot([df['X'], df['Y'], df['Z']], labels = ['X', 'Y', 'Z'])
-# plt.title('Box Plot of X, Y, Z (RAW DATA)')
-
-
-# "Simple Statistics from the Raw data"
-
-# stats = df.describe()
-
-# print ("The statistically measures of the columns in the raw dataset are:", stats)
+fig_2 = plt.figure(figsize=(10,6))
+plt.boxplot([df['X'], df['Y'], df['Z']], labels = ['X', 'Y', 'Z'])
+plt.title('Box Plot of X, Y, Z (RAW DATA)')
 
 
-# "STEP 3: Correlation Analysis of RAW Data"
+"Simple Statistics from the Raw data"
 
-# correlation_matrix = df.corr()
+stats = df.describe()
 
-# print ("Here is the correlation matrix of the raw dataset", correlation_matrix)
+print ("The statistically measures of the columns in the raw dataset are:", stats)
 
-# # Need to create a new figure
 
-# plt.figure(figsize=(10,10))
+"STEP 3: Correlation Analysis of RAW Data"
 
-# correlation_heatmap = sns.heatmap(correlation_matrix)
+correlation_matrix = df.corr()
+
+print ("Here is the correlation matrix of the raw dataset", correlation_matrix)
+
+# Need to create a new figure
+
+plt.figure(figsize=(10,10))
+
+correlation_heatmap = sns.heatmap(np.abs(correlation_matrix))
 
 "Step 4: Classification Model Development/Engineering"
 
@@ -318,6 +318,35 @@ print('\n Here is the confusion matrix for the stacked model: \n', stacked_conf_
 stacked_conf_mat_disp = ConfusionMatrixDisplay(confusion_matrix = stacked_conf_matrix)
 stacked_conf_mat_disp.plot(cmap="viridis")
 plt.title("Confusion Matrix for The Stacked Model")
+
+
+"Step 7: Model Evaluation"
+
+#This step involves saving the best model (Decision Tree) in to a Joblib format
+
+#library import
+import joblib as jb
+
+#Saving model as a joblib file
+jb.dump(best_decisiontree_model3, 'FinalModel.joblib')
+
+final_model = jb.load('FinalModel.joblib')
+sample_coordinates = [[9.375,3.0625,1.51],
+                      [6.995,5.125,0.3875],
+                      [0,3.0625,1.93],
+                      [9.4,3,1.8],
+                      [9.4,3,1.3]]
+
+#Put cooridnates into dataframe
+sample_df = pd.DataFrame(sample_coordinates, columns = ['X', 'Y', 'Z'])
+
+#Need to scale the coordinates
+scaled_sample_coordinates = my_scaler.transform(sample_df)
+
+
+#Predictions with final model
+final_model_pred = final_model.predict(scaled_sample_coordinates)
+print ('\n The predicted steps for the sample coordinates are:', final_model_pred)
 
 
 
